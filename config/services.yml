@@ -1,9 +1,7 @@
-services:
-    front_controller:
-        class: Yolo\FrontController
-        arguments:
-            - @http_kernel
+parameters:
+    exception_handler: Yolo\handleException
 
+services:
     http_kernel:
         class: Symfony\Component\HttpKernel\HttpKernel
         arguments:
@@ -33,9 +31,6 @@ services:
     request_context:
         class: Symfony\Component\Routing\RequestContext
 
-    exception_handler:
-        class: Yolo\ExceptionHandler
-
     listener.router:
         class: Symfony\Component\HttpKernel\EventListener\RouterListener
         arguments:
@@ -54,6 +49,6 @@ services:
     listener.exception:
         class: Symfony\Component\HttpKernel\EventListener\ExceptionListener
         arguments:
-            - [@exception_handler, 'handle']
+            - %exception_handler%
         tags:
             - { name: kernel.event_subscriber }
